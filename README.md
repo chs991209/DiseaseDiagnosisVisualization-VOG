@@ -19,6 +19,8 @@ The project is designed for quick signal quality checks and exploratory analysis
   - left/right tracking error (`Eye - Target`),
   - non-target-axis movement for noise/outlier monitoring.
 
+<img width="1589" height="1145" alt="output" src="https://github.com/user-attachments/assets/0b977560-0c6e-4580-8deb-298cd85c1701" />
+
 ## Notebooks
 
 - `visualization.ipynb`: single-file visualization pipeline and plotting.
