@@ -49,8 +49,6 @@ data/
 
 ### 1. Data Parsing: `src/Parser/data_parser.py`
 
-<img width="1589" height="1145" alt="output" src="https://github.com/user-attachments/assets/0b977560-0c6e-4580-8deb-298cd85c1701" />
-
 ## Notebooks
 *   **Key Method:** `VOGRobustParser.parse()`
 *   **Purpose:** This method serves as the entry point for data ingestion. It reads raw CSV files, standardizes column names, and loads the data into a pandas DataFrame. From a statistical perspective, this is the crucial **Data Loading and Sanitization** step, ensuring data consistency and readiness for subsequent analytical operations.
@@ -69,6 +67,8 @@ data/
 ---
 
 ### 3. Data Visualization: `src/Visualizer/visualizer.py`
+
+<img width="1589" height="1145" alt="output" src="https://github.com/user-attachments/assets/0b977560-0c6e-4580-8deb-298cd85c1701" />
 
 *   **Key Method:** `VOGMatplotlibVisualizer.plot()`
 *   **Purpose:** This method takes the analyzed `VOGData` object and generates a multi-panel plot using Matplotlib. It visually represents the analysis results, including:
