@@ -75,5 +75,6 @@ data/
     *   Raw waveforms of target and eye movements.
     *   The calculated eye-tracking error over time.
     *   The identified "cross-axis noise," allowing for visual inspection of movements perpendicular to the intended tracking direction.
+#### <p align="center">The third one</p>
+<img width="861" height="662" alt="스크린샷 2026-03-27 오후 2 05 42" src="https://github.com/user-attachments/assets/2a8fb5d8-1cf1-4702-af8d-862f2617923c" />
 
-By examining these three modules, one can gain a comprehensive understanding of the entire data processing and analysis workflow implemented within the `src/` directory before seeing how they are orchestrated by the main application.
