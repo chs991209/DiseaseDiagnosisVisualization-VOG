@@ -2,15 +2,23 @@
 
 This project implements a pipeline to parse, analyze, and visualize Vestibulo-Ocular Gaze (VOG) data from CSV files. The primary goal is to assess eye-tracking performance by comparing eye movement against a moving target.
 
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/b1fe42e7-5aaf-4612-9c48-7c8d88dec418">
+</div>
+
+---
+
 ## Navigating the Core Analysis Logic
 
 To efficiently understand the data processing pipeline **before** diving into the main executor code (e.g., `src/app/main_app.py`), we recommend reviewing the key methods within the `src/` directory in the specified order. These three methods represent the foundational stages of the analysis.
 
 ---
 
+
+
 ## Data Tree
 
-#### Data should be like this bellow
+#### Data should be like this below
 
 <details>
 <summary>📂 Click to expand the Data Directory Tree</summary>
@@ -68,13 +76,26 @@ data/
 
 ### 3. Data Visualization: `src/Visualizer/visualizer.py`
 
+---
+
+<div align="center">
 <img width="1589" height="1145" alt="output" src="https://github.com/user-attachments/assets/0b977560-0c6e-4580-8deb-298cd85c1701" />
+</div>
+
+---
 
 *   **Key Method:** `VOGMatplotlibVisualizer.plot()`
 *   **Purpose:** This method takes the analyzed `VOGData` object and generates a multi-panel plot using Matplotlib. It visually represents the analysis results, including:
     *   Raw waveforms of target and eye movements.
     *   The calculated eye-tracking error over time.
     *   The identified "cross-axis noise," allowing for visual inspection of movements perpendicular to the intended tracking direction.
-#### <p align="center">The third one</p>
-<img width="861" height="662" alt="스크린샷 2026-03-27 오후 2 05 42" src="https://github.com/user-attachments/assets/2a8fb5d8-1cf1-4702-af8d-862f2617923c" />
 
+---
+
+#### <p align="center">The third one</p>
+
+---
+
+<div align="center">
+<img width="861" height="662" alt="스크린샷 2026-03-27 오후 2 05 42" src="https://github.com/user-attachments/assets/2a8fb5d8-1cf1-4702-af8d-862f2617923c" />
+</div>
