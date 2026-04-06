@@ -5,26 +5,28 @@ from src.Dto.vog_data_entity import VOGData
 
 
 class VOGDomainAnalyzer:
+    """
+    VOG 데이터의 도메인 로직을 처리하는 핵심 분석기(Analyzer).
+    메타데이터 추출, 파생 변수(Error) 계산, Anti-saccade 반전 및 교차 축 노이즈 식별을 담당합니다.
+    """
+
     def extract_metadata(self, file_path: Path) -> Tuple[str, str, str]:
-        """
-        데이터 디렉토리 구조(Path)를 역추적하여 메타데이터를 도출합니다.
-        예: data/sample_csv/HC_csv_24_25/20240329.../PD VOG -_...csv
-        """
-        # 상위 2단계 폴더명 (HC_csv_24_25 또는 MCI_csv_25_26)
+        """데이터 디렉토리 구조(Path)를 역추적하여 메타데이터를 도출합니다."""
         group_name = (
             file_path.parent.parent.name
             if len(file_path.parents) >= 2
             else "Unknown_Group"
         )
-        # 상위 1단계 폴더명 (20240329_084111_1324721_)
         session_id = file_path.parent.name
-        # 파일명에서 불필요한 접두어 정리
         task_name = (
             file_path.stem.replace("PD VOG -_", "").replace("PD VOG -", "").strip()
         )
         return group_name, session_id, task_name
 
     def analyze(self, file_path: Path, df: pd.DataFrame) -> Optional[VOGData]:
+        # 1. 파일 구조로부터 도메인 메타데이터 선행 추출
+        group, session, task = self.extract_metadata(file_path)
+
         time_col = self._find_col(df, ["time", "t"]) or df.columns[0]
 
         target_v = self._find_col(df, ["targetv", "target_v"])
@@ -36,7 +38,7 @@ class VOGDomainAnalyzer:
         if not target_col:
             return None
 
-        # Determine the primary axis of movement (Vertical or Horizontal)
+        # Determine the primary axis of movement
         direction = "Vertical" if "v" in target_col.lower() else "Horizontal"
 
         eye_col_l = self._find_col(
@@ -49,24 +51,59 @@ class VOGDomainAnalyzer:
         if not eye_col_l or not eye_col_r:
             return None
 
-        # Feature Engineering: 추적 오차(Error) 계산
-        df["Error_L"] = df[eye_col_l] - df[target_col]
-        df["Error_R"] = df[eye_col_r] - df[target_col]
-
-        # --- Detecting Outlier Noise Process ---
-        # The logic here is to capture the eye movements on the axis orthogonal (perpendicular)
-        # to the primary target movement axis.
-        # For instance, if the target is moving vertically (direction == "Vertical"),
-        # then any significant horizontal movement (lh, rh) is considered statistical noise or an outlier.
-        # This cross-axis noise helps in evaluating the quality of the subject's focus
-        # and identifying artifacts like blinks, head movements, or lack of attention.
+        # =========================================================================
+        # [ARCHITECTURAL UPDATE] Dynamic Target Inversion for Anti-Saccade Tasks
+        # =========================================================================
         """
-        This logic deliberately eschews algorithmic data clipping in favor of qualitative visual diagnostics. 
-        By extracting the raw, orthogonal positional data relative to the primary stimulus vector 
-        (e.g., horizontal variance during a vertical task), 
-        it visualizes the departure from the theoretical trajectory. 
-        This unadulterated plotting allows statisticians and clinicians to visually identify 
-        the nature of the variance—distinguishing between random stochastic noise and systematic artifacts 
+        If the name has 'anti'
+        """
+        is_anti = "anti" in task.lower()
+
+        if is_anti:
+            df["Expected_Target"] = -df[target_col]
+        else:
+            df["Expected_Target"] = df[target_col]
+
+        # Feature Engineering: Calculate Tracking Error
+        df["Error_L"] = df[eye_col_l] - df["Expected_Target"]
+        df["Error_R"] = df[eye_col_r] - df["Expected_Target"]
+
+        # =========================================================================
+        # [DOMAIN LOGIC SEPARATION] Extracting Orthogonal Variance
+        # =========================================================================
+        noise_col_l, noise_col_r = self._extract_orthogonal_noise(df, direction)
+
+        return VOGData(
+            file_name=file_path.name,
+            group=group,
+            session_id=session,
+            task_name=task,
+            direction=direction,
+            is_anti=is_anti,
+            df=df,
+            target_col=target_col,
+            expected_target_col="Expected_Target",
+            eye_col_l=eye_col_l,
+            eye_col_r=eye_col_r,
+            noise_col_l=noise_col_l,
+            noise_col_r=noise_col_r,
+            time_col=time_col,
+        )
+
+    def _extract_orthogonal_noise(
+        self, df: pd.DataFrame, direction: str
+    ) -> Tuple[Optional[str], Optional[str]]:
+        """
+        Extracts the eye movement data on the axis orthogonal (perpendicular)
+        to the primary target movement axis.
+
+        [Methodological Note on Outlier Handling & EDA]
+        This logic deliberately eschews algorithmic data clipping in favor of qualitative visual diagnostics.
+        By extracting the raw, orthogonal positional data relative to the primary stimulus vector
+        (e.g., horizontal variance during a vertical task),
+        it visualizes the departure from the theoretical trajectory.
+        This unadulterated plotting allows statisticians and clinicians to visually identify
+        the nature of the variance—distinguishing between random stochastic noise and systematic artifacts
         (e.g., unintended saccades or spatial drifts)—rather than masking them through automated outlier removal.
         """
         noise_col_l = self._find_col(
@@ -75,23 +112,7 @@ class VOGDomainAnalyzer:
         noise_col_r = self._find_col(
             df, ["rh" if direction == "Vertical" else "rv"], exact=True
         )
-
-        group, session, task = self.extract_metadata(file_path)
-
-        return VOGData(
-            file_name=file_path.name,
-            group=group,
-            session_id=session,
-            task_name=task,
-            direction=direction,
-            df=df,
-            target_col=target_col,
-            eye_col_l=eye_col_l,
-            eye_col_r=eye_col_r,
-            noise_col_l=noise_col_l,
-            noise_col_r=noise_col_r,
-            time_col=time_col,
-        )
+        return noise_col_l, noise_col_r
 
     def _find_col(
         self, df: pd.DataFrame, keywords: List[str], exact: bool = False
