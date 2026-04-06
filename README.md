@@ -67,6 +67,7 @@ data/
 
 *   **Key Method:** `VOGDomainAnalyzer.analyze()`
 *   **Purpose:** This is the central analysis engine. The `analyze` method processes the parsed DataFrame to derive key features:
+    **Anti Saccade has the opposite handler modification(df -> -df)**
     1.  **Determines Primary Axis:** Identifies whether the target's movement is primarily Vertical or Horizontal.
     2.  **Calculates Tracking Error:** Computes the difference between the eye's position and the target's position for both left and right eyes (`Error_L`, `Error_R`). This represents the core performance metric.
     3.  **Identifies Cross-Axis Noise:** Extracts eye movement data from the axis *orthogonal* to the primary target movement. This "noise" is not statistically filtered or removed but is isolated for qualitative visual assessment of off-axis deviations, providing insight into potential artifacts or unintended eye movements.
