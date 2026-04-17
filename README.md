@@ -63,6 +63,19 @@ data/
 
 ---
 
+## Updates
+
+### VOG Visualization through Spectrograms
+
+Means of spectrograms drawin with different window sizes
+
+<img width="5180" height="2458" alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/8d7f91a6-7c84-4ca6-976f-847f6e6778f3" />
+
+<img width="5180" height="2458" alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/89f26ce2-ac33-4ba4-a947-4bc94d3f1bdb" />
+
+<p align="center">Upper one is drawn with 16 size window, Down one is drawn with 48 size window
+
+---
 ### 2. Feature Engineering & Analysis: `src/Analyzer/vog_data_analyzer.py`
 
 *   **Key Method:** `VOGDomainAnalyzer.analyze()`
@@ -81,6 +94,10 @@ data/
 
 <div align="center">
 <img width="1589" height="1145" alt="output" src="https://github.com/user-attachments/assets/0b977560-0c6e-4580-8deb-298cd85c1701" />
+</div>
+
+<div align="center">
+<img width="1589" height="1145" alt="reversed" src="https://github.com/user-attachments/assets/21b95a62-2130-4b47-9913-6aa7b73a9a24" />
 </div>
 
 ---
