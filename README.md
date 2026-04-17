@@ -69,9 +69,9 @@ data/
 
 Means of spectrograms drawin with different window sizes
 
-<img width="5180" height="2458" alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/8d7f91a6-7c84-4ca6-976f-847f6e6778f3" />
+<img width="2000" alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/8d7f91a6-7c84-4ca6-976f-847f6e6778f3" />
 
-<img width="5180" height="2458" alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/89f26ce2-ac33-4ba4-a947-4bc94d3f1bdb" />
+<img width="2000"  alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/89f26ce2-ac33-4ba4-a947-4bc94d3f1bdb" />
 
 <p align="center">Upper one is drawn with 16 size window, Down one is drawn with 48 size window
 
