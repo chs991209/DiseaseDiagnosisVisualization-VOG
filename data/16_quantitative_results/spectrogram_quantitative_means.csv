@@ -1,0 +1,19 @@
+,,,High_Freq_Mean_dB (>10Hz),High_Freq_Mean_dB (>10Hz),Low_Freq_Mean_dB (0-10Hz),Low_Freq_Mean_dB (0-10Hz),Overall_Mean_dB,Overall_Mean_dB,Peak_Power_dB,Peak_Power_dB
+Group,,,HC,MCI,HC,MCI,HC,MCI,HC,MCI
+Axis,Task,Eye,,,,,,,,
+Horizontal,Horizontal Saccade A,Left,-9.8196,-4.6642,5.3592,8.0174,0.8439,3.6911,17.7409,19.0801
+Horizontal,Horizontal Saccade A,Right,-12.5652,-5.1996,3.7941,7.3765,-0.7807,3.0605,15.3257,19.7665
+Horizontal,Horizontal Saccade B,Left,-6.9915,-3.4131,9.2397,10.3432,4.6705,5.9231,20.8961,23.241
+Horizontal,Horizontal Saccade B,Right,-8.6329,-4.7094,8.8207,9.7954,4.2029,5.3216,20.7714,20.9313
+Horizontal,Horizontal Saccade B (anti),Left,-9.2949,-5.705,9.3112,10.1526,4.6581,5.6012,21.3914,21.2904
+Horizontal,Horizontal Saccade B (anti),Right,-8.9824,-6.5912,8.9307,10.2985,4.2977,5.7015,20.8501,21.5324
+Horizontal,Horizontal Saccade R,Left,-9.9014,-5.4388,8.1357,9.726,3.4988,5.2115,22.7855,24.7738
+Horizontal,Horizontal Saccade R,Right,-11.3,-6.0866,7.5157,9.0168,2.8571,4.5058,22.7499,24.285
+Vertical,Vertical Saccade A,Left,-15.152,-15.56,3.5827,3.3245,-1.0738,-1.3358,15.19,15.443
+Vertical,Vertical Saccade A,Right,-15.4208,-14.7828,3.3959,3.4029,-1.2628,-1.2384,15.027,15.4728
+Vertical,Vertical Saccade B,Left,-10.0096,-10.352,8.627,8.5122,3.9731,3.8523,20.765,21.1133
+Vertical,Vertical Saccade B,Right,-10.2972,-10.1752,8.2982,8.6022,3.6454,3.9446,20.6049,21.0675
+Vertical,Vertical Saccade B (anti),Left,-9.9795,-10.3,8.9503,9.0389,4.2888,4.3677,20.6524,21.2408
+Vertical,Vertical Saccade B (anti),Right,-10.0051,-10.1244,8.7181,9.0602,4.0619,4.3926,20.7359,21.2608
+Vertical,Vertical Saccade R,Left,-12.8298,-14.3911,6.2189,4.7348,1.5544,0.0685,21.0886,18.5401
+Vertical,Vertical Saccade R,Right,-13.3147,-14.526,5.7056,4.4985,1.0419,-0.1654,20.926,18.5148
