@@ -117,3 +117,4 @@ Means of spectrograms drawin with different window sizes
 <div align="center">
 <img width="861" height="662" alt="스크린샷 2026-03-27 오후 2 05 42" src="https://github.com/user-attachments/assets/2a8fb5d8-1cf1-4702-af8d-862f2617923c" />
 </div>
+
