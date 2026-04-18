@@ -1,4 +1,4 @@
-# VOG Data Analysis Pipeline
+# 1. VOG Data Analysis Pipeline
 
 This project implements a pipeline to parse, analyze, and visualize Vestibulo-Ocular Gaze (VOG) data from CSV files. The primary goal is to assess eye-tracking performance by comparing eye movement against a moving target.
 
@@ -8,7 +8,153 @@ This project implements a pipeline to parse, analyze, and visualize Vestibulo-Oc
 
 ---
 
-## Navigating the Core Analysis Logic
+# 2. VOG Data to Spectrograms
+
+### Let's introduce the core process of vog data(tabular time-series) visualization
+
+## 2-1. Time-Series Data Handling 
+### - From Target & Actual Eye Position Data to Actual Eye - Target Position Data 
+
+<img width="2149" alt="스크린샷 2026-04-18 오후 1 54 59" src="https://github.com/user-attachments/assets/1979f2df-dd9a-4e0e-9e4d-e1de06015079" />
+
+<br></br>
+<p>First, we should get the difference of the patient's target's movement and the patient's eye's movement.
+<br>At that, we subtract the position value of the target from the patient's actual eye's position.
+<br>It can be thought like why do we subtract the target's one, not the patient's one,
+<br>but it's like Prediction Value - Correct Value form of Machine Learning.
+    <br></br>
+<br>And we get squared value of them at the spectrograms so don't need to worry about that.</p>
+
+## 2-2. Visualizing the Time-Series data
+### - Time-Series Data to Spectrograms 
+### -- Mean Spectrograms - to see overall distribution of participants' eye movement(Actual Eye- Target) data of tasks.
+### The basic goal of this core process
+
+<img width="2532" alt="스크린샷 2026-04-18 오후 2 16 50" src="https://github.com/user-attachments/assets/6ab4a7c6-ef0e-48e8-b7ac-c0ae5f01bc53" />
+
+The goal is to 'see' the movement data with our eyes.
+When we need to see what's going on on the time, and which frequency the data's appearing,
+<br>we should visualize them, with time, frequency axes and the **movement value through 'Vision'**
+
+
+<img width="2467" alt="스크린샷 2026-04-18 오후 2 28 12" src="https://github.com/user-attachments/assets/1af81549-7d52-4bd5-9c37-e3faaa37bf74" />
+
+We have a lot of patients in the tasks' data.
+
+%% Lets call the parts of the data as variables and numbers %%
+
+<img width="851" align="center" alt="스크린샷 2026-04-18 오후 2 42 07" src="https://github.com/user-attachments/assets/89daa907-da75-4b57-bd2b-29339958a567" />
+
+
+<br></br>
+<p align="center"> i = patient(id), k = task(type of task-id), G = group(type of group-id)
+
+In the data, there are numbers of tasks done by a lot of patients of each Group.
+<br>Participants are departed to HC(health condition), and MCI(Mild Cognitive Impairment) group **(list of G)**.
+<br>And each patient **(i)** had done tasks such as Saccade A, Saccade B, Anti Saccade B, Saccade R -- **(list of candidates for k)**.
+<r>So the data have **i, k, G**!
+
+<br>And the bellow statements will use x for time, y for frequency
+<br><b>So (x, y) is about (time, frequency) space features</b>
+
+
+#### 2-2-1. Fourier Transform
+
+- We're gonna do Fourier Transformation(Short-term), Calculating Arithmetic Mean and Rendering to dB & Colorization
+
+<img width="1651" align="center" alt="스크린샷 2026-04-18 오후 2 40 36" src="https://github.com/user-attachments/assets/48f9f1d6-74c2-4e22-88d1-cb22d181d159" />
+
+<br></br>
+<p align="center">We can get f_i^k value through fourier transform, which transforms the <b>wave(time-series-based) data</b> to <b>(time, frequency)</b>-based data.
+<br>And the f_i^k value is for each participant <b>(i)</b></p>
+
+#### 2-2-1-1. Scanning proces & Averaging process of Short-term Fourier Transform
+
+<img width="2356" alt="스크린샷 2026-04-18 오후 3 16 26" src="https://github.com/user-attachments/assets/1143fa57-e225-43fc-92df-ee053b3dff27" />
+
+<br><b>2-2-1-1-1. Scan the TS Data</b>
+<br>
+<br>The Short-term Fouerier Transform(STFT) does scanning of the data along time axis based direction.
+<br>The <b>tau</b> is the variable for scanning the time-series eye movement data, and the scanning is done at each pixel of Spectrogram field,
+<br>where you can see the spectrogram being shown on (time, frequency) field.
+<br>
+<br><b>2-2-1-1-1. Get value with correction factor</b>
+<br>
+<br>Then we divide the scanned data with <b>correction factor U</b> of window w
+
+<img width="2136" alt="스크린샷 2026-04-18 오후 4 03 47" src="https://github.com/user-attachments/assets/67092d20-8ab9-4774-b44c-9c66cdb50c18" />
+<br>
+<img width="2425" alt="스크린샷 2026-04-18 오후 4 05 39" src="https://github.com/user-attachments/assets/a02c9514-6d93-4c9b-acb8-f40a8377a13c" />
+
+
+<img width="2456" align="center" alt="스크린샷 2026-04-18 오후 2 50 41" src="https://github.com/user-attachments/assets/b5528a03-8c42-4dbe-ae2b-ce7f758d0d8d" />
+
+<br></br>
+<p align="center"> <b>The final value, which is Mean Spectrogram's data</b></p>
+
+<p><br>We need to see the overall distribution of movement data of tasks by participants' groups,</br> 
+<br>so we've done getting mean spectrograms of them first</br>
+</p>
+
+- We first do calculate Arithmetic Mean, and then we render it to dB(decibell) unit.
+
+#### 2-2-2. Averaging Position(Actual Eye - Target) data 
+
+<img width="2427" align="center" alt="스크린샷 2026-04-18 오후 3 02 46" src="https://github.com/user-attachments/assets/6facbe41-b879-4bcf-9aad-ccab0cbdaeef" />
+<br></br>
+<br>We get the calculated arithmetic mean value of the Time-series data,
+<br>of each patient i of the group, doing task k</br>
+Then we have to do visual transformation of all the data, so it's
+<br>done for every task of every group of participant.</br>
+
+Lets get to the next phase.
+
+#### 2-2-3. Rendering Arithmetic Means of Time-Series into dB unit(Visualization target) data
+
+<img width="1449" align="center" alt="스크린샷 2026-04-18 오후 3 08 14" src="https://github.com/user-attachments/assets/8b54c0b6-748f-49eb-8b6f-d27f458923cc" />
+
+<br>The next phase is logarithmization of Arithmetic mean, to generate dB data.
+<br>We're getting the mean spectrogram, so we gather all patients <b>(i)</b> participated in each task of group in Averaging process(2-2-2),
+<br>and we're lgorithmizing it. Then we can get <b>each task of group's</b> dB data.
+
+#### 2-2-4. Colorization of dB data to pixels' colors
+
+<img width="2267" alt="스크린샷 2026-04-18 오후 3 34 02" src="https://github.com/user-attachments/assets/8696bfd6-2222-4481-bd46-04f0033b2107" />
+
+<br> We need transformation from dB data to pixels' colors.
+<br>We can use a bright color to show the strong(high dB) amplitude of the movement's position data,
+<br>and use a dark color to show the tiny(low dB) amplitude of them.
+<br> Then we use gradient color spectrum to show the difference of the amplitude of the data.
+
+## Final Recap
+#### Let's do a final recap for visualization to mean spectrograms process
+<img width="2275" alt="스크린샷 2026-04-18 오후 3 42 32" src="https://github.com/user-attachments/assets/523c74a2-fb89-47d8-9c68-7b9cc6296cfa" />
+
+# Getting Difference Maps
+
+### After getting mean spectrograms of experiment data, we can get difference(of HC and MCI) map of experiment
+
+<img width="2509" alt="스크린샷 2026-04-18 오후 3 55 56" src="https://github.com/user-attachments/assets/f28faaff-9d47-4574-b90c-17414cdf3ebb" />
+
+
+
+<br>The fourier transformation to dB unit to colorizing is same.
+<br> But we get the difference squared for each pixel of spectrogram.
+<br> The output spectrograms mean the difference of the HC and MCI group's <b>Actual Eye - Target</b> for each tasks.
+
+<img width="2523" alt="스크린샷 2026-04-18 오후 3 54 47" src="https://github.com/user-attachments/assets/51683954-418d-497c-90e7-cec990c825ea" />
+
+# Getting Variance Maps
+
+### We can get Variance Maps for each group
+#### We can see how far the eye movements of each group are from the means of them.
+<img width="2446" alt="스크린샷 2026-04-18 오후 3 56 57" src="https://github.com/user-attachments/assets/959f3dba-65d2-46b7-b645-88f87035db38" />
+
+<br> We saw that the MCI patients' variance are vividly high
+
+---
+
+## 1-1. Navigating the Core Analysis Logic
 
 To efficiently understand the data processing pipeline **before** diving into the main executor code (e.g., `src/app/main_app.py`), we recommend reviewing the key methods within the `src/` directory in the specified order. These three methods represent the foundational stages of the analysis.
 
@@ -55,65 +201,22 @@ data/
 ```
 </details>
 
-### 1. Data Parsing: `src/Parser/data_parser.py`
+# Mean Spectrograms
 
-## Notebooks
-*   **Key Method:** `VOGRobustParser.parse()`
-*   **Purpose:** This method serves as the entry point for data ingestion. It reads raw CSV files, standardizes column names, and loads the data into a pandas DataFrame. From a statistical perspective, this is the crucial **Data Loading and Sanitization** step, ensuring data consistency and readiness for subsequent analytical operations.
+### Mean of Actual Eye - Target movement data, on (time, frequency) space
 
----
+<img width="2274" alt="스크린샷 2026-04-18 오후 4 09 53" src="https://github.com/user-attachments/assets/c7f8f3b1-42ec-4ff5-a215-8d5573390398" />
 
-## Updates
 
-### VOG Visualization through Spectrograms
+# Squared Difference Map Spectrograms
 
-Means of spectrograms drawin with different window sizes
+### Differnce between HC and MCI group for each task
 
-<img width="2000" alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/8d7f91a6-7c84-4ca6-976f-847f6e6778f3" />
+<img width="2590" alt="Combined_Difference_Maps_Squared" src="https://github.com/user-attachments/assets/68a1ba00-3b4c-4d90-bf4d-48419e0e9a80" />
 
-<img width="2000"  alt="Combined_32_Panels_Comprehensive_Dashboard" src="https://github.com/user-attachments/assets/89f26ce2-ac33-4ba4-a947-4bc94d3f1bdb" />
+# Variance Map Spectrograms
 
-<p align="center">Upper one is drawn with 16 size window, Down one is drawn with 48 size window
+### Variance in each task in each group
 
----
-### 2. Feature Engineering & Analysis: `src/Analyzer/vog_data_analyzer.py`
+<img width="2278" alt="스크린샷 2026-04-18 오후 4 11 34" src="https://github.com/user-attachments/assets/9ad5f8f9-7559-4e6a-b54c-7c15f1eb9b71" />
 
-*   **Key Method:** `VOGDomainAnalyzer.analyze()`
-*   **Purpose:** This is the central analysis engine. The `analyze` method processes the parsed DataFrame to derive key features:
-    **Anti Saccade has the opposite handler modification(df -> -df)**
-    1.  **Determines Primary Axis:** Identifies whether the target's movement is primarily Vertical or Horizontal.
-    2.  **Calculates Tracking Error:** Computes the difference between the eye's position and the target's position for both left and right eyes (`Error_L`, `Error_R`). This represents the core performance metric.
-    3.  **Identifies Cross-Axis Noise:** Extracts eye movement data from the axis *orthogonal* to the primary target movement. This "noise" is not statistically filtered or removed but is isolated for qualitative visual assessment of off-axis deviations, providing insight into potential artifacts or unintended eye movements.
-    *   This method transforms raw time-series data into a structured format with engineered features, preparing it for visual interpretation.
-
----
-
-### 3. Data Visualization: `src/Visualizer/visualizer.py`
-
----
-
-<div align="center">
-<img width="1589" height="1145" alt="output" src="https://github.com/user-attachments/assets/0b977560-0c6e-4580-8deb-298cd85c1701" />
-</div>
-
-<div align="center">
-<img width="1589" height="1145" alt="reversed" src="https://github.com/user-attachments/assets/21b95a62-2130-4b47-9913-6aa7b73a9a24" />
-</div>
-
----
-
-*   **Key Method:** `VOGMatplotlibVisualizer.plot()`
-*   **Purpose:** This method takes the analyzed `VOGData` object and generates a multi-panel plot using Matplotlib. It visually represents the analysis results, including:
-    *   Raw waveforms of target and eye movements.
-    *   The calculated eye-tracking error over time.
-    *   The identified "cross-axis noise," allowing for visual inspection of movements perpendicular to the intended tracking direction.
-
----
-
-#### <p align="center">The third one</p>
-
----
-
-<div align="center">
-<img width="861" height="662" alt="스크린샷 2026-03-27 오후 2 05 42" src="https://github.com/user-attachments/assets/2a8fb5d8-1cf1-4702-af8d-862f2617923c" />
-</div>
