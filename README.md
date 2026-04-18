@@ -270,20 +270,49 @@ data/
 
 # (Linear) Mean Spectrograms
 
-### Mean of Actual Eye - Target movement data, on (time, frequency) space
+### Mean of Actual Eye 
+#### - Target movement data, on (time, frequency) space, window size = 24
 
-<img width="2274" alt="스크린샷 2026-04-18 오후 4 09 53" src="https://github.com/user-attachments/assets/c7f8f3b1-42ec-4ff5-a215-8d5573390398" />
+<img width="5180" alt="Mean_Spectrograms_Linear" src="https://github.com/user-attachments/assets/742b0d69-0bc9-4e6b-a535-bddc1a2341fe" />
+
+
+# (Mel) Mean Spectrograms
+
+### Mean of Actual Eye - Target movement data, on (time, frequency) space,
+#### filtered with Mel filter, mel break = 20Hz, window size = 24
+
+
+<img width="5180" alt="Mean_Spectrograms_Mel" src="https://github.com/user-attachments/assets/fb534e2c-b9b6-429e-a2d5-e70d0cba3310" />
 
 
 # (Linear) Squared Difference Map Spectrograms
 
 ### Differnce between HC and MCI group for each task
+#### window size = 24
 
-<img width="2590" alt="Combined_Difference_Maps_Squared" src="https://github.com/user-attachments/assets/68a1ba00-3b4c-4d90-bf4d-48419e0e9a80" />
+<img width="5180" alt="Difference_Maps_Linear" src="https://github.com/user-attachments/assets/79e06fdf-f287-4912-95a7-9b25e236559b" />
+
+
+# (Mel) Squared Difference Map Spectrograms
+
+### Differnce between HC and MCI group for each task
+#### mel break = 20Hz, window size = 24
+
+<img width="5180" alt="Difference_Maps_Mel" src="https://github.com/user-attachments/assets/eac6fac9-502b-4afa-8fe5-ed546360d585" />
+
 
 # (Linear) Variance Map Spectrograms
 
 ### Variance in each task in each group
+#### window size = 24
 
-<img width="2278" alt="스크린샷 2026-04-18 오후 4 11 34" src="https://github.com/user-attachments/assets/9ad5f8f9-7559-4e6a-b54c-7c15f1eb9b71" />
+<img width="5180" alt="Variance_Maps_Linear" src="https://github.com/user-attachments/assets/04a43b5b-2680-4cfd-b1af-2503aaae9459" />
+
+
+# (Mel) Variance Map Spectrograms
+
+### Variance in each task in each group
+#### mel break = 20Hz, window size = 24
+
+<img width="5180" alt="Variance_Maps_Mel" src="https://github.com/user-attachments/assets/7cd1925f-0321-4436-bee4-8f3940124fbb" />
 
