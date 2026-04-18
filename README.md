@@ -1,6 +1,6 @@
 # 1. VOG Data Analysis Pipeline
 
-This project implements a pipeline to parse, analyze, and visualize Vestibulo-Ocular Gaze (VOG) data from CSV files. The primary goal is to assess eye-tracking performance by comparing eye movement against a moving target.
+This project implements a pipeline to parse, analyze, and visualize Vestibulo-Ocular Gaze (VOG) data of CSV files. The primary goal is to assess eye-tracking performance by comparing eye movement against a moving target.
 
 <div align="center">
     <img src="https://github.com/user-attachments/assets/b1fe42e7-5aaf-4612-9c48-7c8d88dec418">
@@ -153,6 +153,73 @@ Lets get to the next phase.
 <br> We saw that the MCI patients' variance are vividly high
 
 ---
+# Additional: Mel Filtering Applied Spectrograms
+
+## Concept of Mel Filtering
+
+<img width="1322" alt="스크린샷 2026-04-18 오후 4 21 02" src="https://github.com/user-attachments/assets/fc42845e-e9c1-4412-8da2-ce4bf4685ffb" />
+
+<br> Mel filtering is to compress the time-series wave data with different density on different frequency.
+<br> Human auditory organ is known to handle the audio signal in diverset density,
+<br> -- When frequency is high, it compresses a lot.
+<br> We cannot identify the difference of the frequency of the signals easily, between high frequencies
+<br> -- When frequency is low, it compresses less.
+<br> We can identify the difference of it between low frequencies.
+
+<br>
+<br> It is known to be caused by the distinguish-point of the meaning of language of voice highly focused on the low frequency signals,
+<br> which vowels' frequency range is mostly based on low frequency area.
+
+<br><b>The separation point of the frequency of the voice is mel break point</b>
+<br>We can apply that in the Mean spectrograms of (Actual - Target) Movement data,
+<br>by assigning appropriate break point of visualization(through mel filtering)
+<br> ** Human voice's mel break point is known as 700~1000Hz
+
+<img width="1065" alt="스크린샷 2026-04-18 오후 4 51 09" src="https://github.com/user-attachments/assets/c0a4bf24-f0fc-4b30-9349-29f23785aa16" />
+
+Mel filter can be defined as Overlapping filter <b>on frequency axis's space.</b>
+
+#### 1. Filters
+<br> We're gonna filter with M frequencies points, frequency values equally divided in frequency area of Mel filter .
+
+<img width="1506" alt="스크린샷 2026-04-18 오후 4 49 10" src="https://github.com/user-attachments/assets/bd71e52f-3c31-4bb4-8b18-ed5d5025ff1f" />
+
+
+<br>We define $M$ filters. 
+<br>Mel filtering process generates $M+2$ points linearly in the Mel domain between the minimum and maximum frequencies.
+<br>This is to ensure uniform perceptual spacing.
+
+#### 2. Inverse Mapping
+
+<img width="679" alt="스크린샷 2026-04-18 오후 4 49 32" src="https://github.com/user-attachments/assets/0453d806-87d8-4249-8222-42bc7c04ebd5" />
+
+<br>We do <b>inverse mapping</b> after that.
+
+<br>The grid points are mapped back to the physical frequency domain (Hz). 
+<br>The esults in non-linear spacing in Hz; the gaps between points increase logarithmically.
+<br>It's an important point of Mel filtering
+
+#### Mel filter's Trigometric Function
+<br> Then it's the trigometric function of mel filter
+<img width="1065" alt="스크린샷 2026-04-18 오후 4 51 09" src="https://github.com/user-attachments/assets/cc5b6b3d-e38e-47f6-a9f4-6a1068c65eb1" />
+
+<br><b>When we project the Actual Eye- Target movement data with Mel filter, we can see mel filtered spectrograms.</b>
+<img width="958" alt="스크린샷 2026-04-18 오후 4 54 07" src="https://github.com/user-attachments/assets/d234f3b0-2efd-48a7-905c-5ad6d8465b47" />
+
+### We can get Mean Strograms with Mel Filters
+
+<img width="1165" alt="스크린샷 2026-04-18 오후 4 55 57" src="https://github.com/user-attachments/assets/25e6fe85-140f-4f5d-a193-fcf327600b92" />
+
+### Squared Difference Map with Mel Filters
+
+<img width="1157" alt="스크린샷 2026-04-18 오후 4 56 14" src="https://github.com/user-attachments/assets/3b14c3ef-774c-44de-a602-7d479c6c851c" />
+
+### Variance Map with Mel Filters
+
+<img width="1455" alt="스크린샷 2026-04-18 오후 4 59 07" src="https://github.com/user-attachments/assets/e2a45696-6287-42ea-bbde-8aeaf8b39672" />
+
+
+---
 
 ## 1-1. Navigating the Core Analysis Logic
 
@@ -201,20 +268,20 @@ data/
 ```
 </details>
 
-# Mean Spectrograms
+# (Linear) Mean Spectrograms
 
 ### Mean of Actual Eye - Target movement data, on (time, frequency) space
 
 <img width="2274" alt="스크린샷 2026-04-18 오후 4 09 53" src="https://github.com/user-attachments/assets/c7f8f3b1-42ec-4ff5-a215-8d5573390398" />
 
 
-# Squared Difference Map Spectrograms
+# (Linear) Squared Difference Map Spectrograms
 
 ### Differnce between HC and MCI group for each task
 
 <img width="2590" alt="Combined_Difference_Maps_Squared" src="https://github.com/user-attachments/assets/68a1ba00-3b4c-4d90-bf4d-48419e0e9a80" />
 
-# Variance Map Spectrograms
+# (Linear) Variance Map Spectrograms
 
 ### Variance in each task in each group
 
